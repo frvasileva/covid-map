@@ -1,0 +1,29 @@
+.popup-covid-info {
+  font-size: 16px;
+  background-color: beige;
+}
+
+.covid-info-list {
+  margin: 0;
+  padding: 0;
+  margin-top: 15px;
+
+  & li {
+    list-style-type: none;
+    font-size: 13px;
+  }
+
+  & span {
+    margin-right: 5px;
+  }
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: #efeeee;
+}
+
+.popup-country-flag {
+  margin-right: 5px;
+  width: 20px;
+}
