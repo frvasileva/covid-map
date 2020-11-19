@@ -9,8 +9,14 @@ import "./CovidTableInfo.scss";
 
 function CovidTableInfo(props) {
   var data = props.covidData;
-  data.features.sort((a, b) => a.properties.continent > b.properties.continent ? 1 : -1);
+  data.features.sort((a, b) =>
+    a.properties.continent > b.properties.continent ? 1 : -1
+  );
   data.features.sort((a, b) => (a.properties.continent != "Europe" ? 1 : -1));
+
+  const handleRowSelected = (lang, long) => {
+    props.handleRowSelected([lang, long]);
+  };
 
   return (
     <div className="table-wrapper">
@@ -29,7 +35,15 @@ function CovidTableInfo(props) {
           </TableHead>
           <TableBody>
             {data.features.map((row) => (
-              <TableRow key={row.properties.country}>
+              <TableRow
+                key={row.properties.country}
+                onClick={() =>
+                  handleRowSelected(
+                    row.geometry.coordinates[1],
+                    row.geometry.coordinates[0]
+                  )
+                }
+              >
                 <TableCell
                   component="th"
                   scope="row"
@@ -39,8 +53,7 @@ function CovidTableInfo(props) {
                     src={row.properties.countryInfo.flag}
                     className="country-flag"
                   />
-                  {row.properties.country}
-                  <br />
+                  <strong>{row.properties.country}</strong>/
                   {row.properties.continent}
                 </TableCell>
                 <TableCell align="right">

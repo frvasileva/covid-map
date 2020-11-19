@@ -1,9 +1,10 @@
 import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
+import { useState } from "react";
 import "./MapWrapper.scss";
+
 function MapWrapper(props) {
   var data = props.covidData;
-
-  console.log("data ", data);
+  const [mapCenter] = useState(props.mapCenter);
 
   if (!data) return <div></div>;
   else
@@ -13,7 +14,7 @@ function MapWrapper(props) {
           <div className="col-12">
             <div className="wrapper">
               <MapContainer
-                center={[43, 25]}
+                center={mapCenter}
                 zoom={7}
                 scrollWheelZoom={true}
                 className="map-wrapper"
@@ -34,15 +35,31 @@ function MapWrapper(props) {
                       fillOpacity={0.5}
                       fillColor={"red"}
                       stroke={false}
-                    ></Circle>
+                      key={
+                        (element.geometry.coordinates[1],
+                        element.geometry.coordinates[0])
+                      }
+                    />
 
                     <Marker
                       position={[
                         element.geometry.coordinates[1],
                         element.geometry.coordinates[0],
                       ]}
+                      key={
+                        "key" +
+                        (element.geometry.coordinates[1],
+                        element.geometry.coordinates[0])
+                      }
                     >
-                      <Popup className="popup-covid-info">
+                      <Popup
+                        className="popup-covid-info"
+                        key={
+                          "popup" +
+                          (element.geometry.coordinates[1],
+                          element.geometry.coordinates[0])
+                        }
+                      >
                         <img
                           src={element.properties.countryInfo.flag}
                           className="popup-country-flag"
@@ -62,7 +79,6 @@ function MapWrapper(props) {
                             </strong>
                           </li>
                           <li className="item-info">
-                            {" "}
                             <span>Today cases:</span>
                             <strong>
                               {element.properties.todayCases.toLocaleString()}

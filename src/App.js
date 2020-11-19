@@ -7,19 +7,19 @@ import MapWrapper from "./MapWrapper";
 
 function App() {
   const [jsonDataState, setJsonData] = useState(null);
+  const [mapCenter, setMapCenter] = useState([43, 25]);
+
   var geoJson;
 
   async function mapEffect({ leafletElement: map } = {}) {
     let response;
 
     try {
-      console.log("axios call");
       response = await axios
         .get("https://corona.lmao.ninja/v2/countries")
         .then((response) => {
           const { data = [] } = response;
           const hasData = Array.isArray(data) && data.length > 0;
-          console.log("response", response.data);
           if (!hasData) return;
 
           geoJson = {
@@ -39,15 +39,17 @@ function App() {
               };
             }),
           };
-
           setJsonData(geoJson);
-          console.log("jsonDataState", jsonDataState);
         });
     } catch (e) {
       console.log(`Failed to fetch countries: ${e.message}`, e);
       return;
     }
   }
+
+  const handleRowSelected = (args) => {
+    setMapCenter(args);
+  };
 
   useEffect(() => {
     mapEffect();
@@ -64,8 +66,11 @@ function App() {
         </div>
         <div className="row">
           <div className="col-12">
-            <MapWrapper covidData={jsonDataState} />
-            <CovidTableInfo covidData={jsonDataState} />
+            <MapWrapper covidData={jsonDataState} mapCenter={mapCenter} />
+            <CovidTableInfo
+              covidData={jsonDataState}
+              handleRowSelected={handleRowSelected}
+            />
           </div>
         </div>
       </div>
