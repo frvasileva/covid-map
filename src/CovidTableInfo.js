@@ -9,10 +9,12 @@ import "./CovidTableInfo.scss";
 
 function CovidTableInfo(props) {
   var data = props.covidData;
+  data.features.sort((a, b) => a.properties.continent > b.properties.continent ? 1 : -1);
+  data.features.sort((a, b) => (a.properties.continent != "Europe" ? 1 : -1));
 
   return (
     <div className="table-wrapper">
-    <h2>Info by country:</h2>
+      <h2>Info by country:</h2>
       <TableContainer component={Paper}>
         <Table className="info-table" aria-label="simple table">
           <TableHead>
@@ -21,6 +23,7 @@ function CovidTableInfo(props) {
               <TableCell align="right">Тoday Cases</TableCell>
               <TableCell align="right">Active(per milion)</TableCell>
               <TableCell align="right">Critical</TableCell>
+              <TableCell align="right">Death</TableCell>
               <TableCell align="right">Tests</TableCell>
             </TableRow>
           </TableHead>
@@ -37,20 +40,29 @@ function CovidTableInfo(props) {
                     className="country-flag"
                   />
                   {row.properties.country}
+                  <br />
+                  {row.properties.continent}
                 </TableCell>
-                <TableCell align="right">{row.properties.todayCases.toLocaleString()}</TableCell>
+                <TableCell align="right">
+                  {row.properties.todayCases.toLocaleString()}
+                </TableCell>
                 <TableCell align="right">
                   {row.properties.active.toLocaleString()}
                   <br />
                   <span>Per million: </span>
                   {row.properties.activePerOneMillion.toLocaleString()}
                 </TableCell>
-                <TableCell align="right">{row.properties.cases.toLocaleString()}</TableCell>
+                <TableCell align="right">
+                  {row.properties.cases.toLocaleString()}
+                </TableCell>
                 <TableCell align="right">
                   {row.properties.critical.toLocaleString()}
                   <br />
                   <span>Per million: </span>
                   {row.properties.criticalPerOneMillion.toLocaleString()}
+                </TableCell>
+                <TableCell align="right">
+                  {row.properties.deaths.toLocaleString()}
                 </TableCell>
               </TableRow>
             ))}
