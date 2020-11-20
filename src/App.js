@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import CovidTableInfo from "./CovidTableInfo";
 
 import MapWrapper from "./MapWrapper";
+import CovidDataGrid from "./components/CovidDataGrid";
 
 function App() {
   const [jsonDataState, setJsonData] = useState(null);
@@ -66,7 +67,12 @@ function App() {
         </div>
         <div className="row">
           <div className="col-12">
+       
             <MapWrapper covidData={jsonDataState} mapCenter={mapCenter} />
+            <br/>
+            <br/>
+            <br/>
+            <CovidDataGrid covidData={jsonDataState}/>
             <CovidTableInfo
               covidData={jsonDataState}
               handleRowSelected={handleRowSelected}
